@@ -1,13 +1,17 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ todo.title }}</title>
+
+{% block title %}TODO INFO{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'todo_info.css' %}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
 <div class="detail-container">
+
+    <a href="{% url 'todo_list' %}">목록으로 돌아가기</a>
+
     <h1>{{ todo.title }}</h1>
     <hr>
     <p class="status">
@@ -24,6 +28,15 @@
     <hr>
     <p class="meta">생성 : {{ todo.created_at }}</p>
     <p class="meta">수정 : {{ todo.updated_at }}</p>
+
+    <br>
+
+    <a href="{% url 'todo_update' todo.pk %}">수정</a>
+
+    <form action="{% url 'todo_delete' todo.pk %}" method="POST" style="display:inline">
+        {% csrf_token %}
+        <button>삭제</button>
+    </form>
 </div>
-</body>
-</html>
+
+{% endblock %}
