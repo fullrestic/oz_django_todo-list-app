@@ -10,33 +10,43 @@
 {% block content %}
 <div class="detail-container">
 
-    <a href="{% url 'todo_list' %}">목록으로 돌아가기</a>
+    <a href="{% url 'cbv_todo_list' %}">목록으로 돌아가기</a>
 
-    <h1>{{ todo.title }}</h1>
+    <h1>{{ dict.title }}</h1>
     <hr>
     <p class="status">
         완료 여부 :
-        {% if todo.is_completed %}
+        {% if dict.is_completed %}
             ✅️
         {% else %}
             ☐
         {% endif %}
     </p>
-    <p class="description">{{ todo.description }}</p>
-    <p>📅 시작일 : {{ todo.start_date }}</p>
-    <p>⏰ 마감일 : {{ todo.end_date }}</p>
+    <p class="description">{{ dict.description }}</p>
+    <p>📅 시작일 : {{ dict.start_date }}</p>
+    <p>⏰ 마감일 : {{ dict.end_date }}</p>
     <hr>
-    <p class="meta">생성 : {{ todo.created_at }}</p>
-    <p class="meta">수정 : {{ todo.updated_at }}</p>
+    <p class="meta">생성 : {{ dict.created_at }}</p>
+    <p class="meta">수정 : {{ dict.updated_at }}</p>
 
     <br>
 
-    <a href="{% url 'todo_update' todo.pk %}">수정</a>
+    <a href="{% url 'cbv_todo_update' dict.id %}">수정</a>
 
-    <form action="{% url 'todo_delete' todo.pk %}" method="POST" style="display:inline">
+    <form id="delete_form" action="{% url 'cbv_todo_delete' dict.id %}" method="POST" style="display:inline">
         {% csrf_token %}
-        <button>삭제</button>
+        <button id="delete_btn" type="button">삭제</button>
     </form>
 </div>
+
+{% block js %}
+    <script>
+        document.querySelector('#delete_btn').addEventListener('click', function() {
+            if(confirm('삭제하시겠습니까?')){
+                document.querySelector('#delete_form').submit();
+            }
+        })
+    </script>
+{% endblock %}
 
 {% endblock %}

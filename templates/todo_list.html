@@ -10,11 +10,21 @@
 {% block content %}
 <h1>TODO LIST</h1>
 <ul class="todo-list">
-    {% for todo in page_obj %}
-    <li><a href="{% url 'todo_info' todo.id %}">{{ todo.title }}</a></li>
-    {% empty %}
-    <li>등록된 TODO가 없습니다.</li>
-    {% endfor %}
+
+    {#  admin 사용자로 조회시 작성자 이름도 나오게  #}
+    {% if request.user.is_superuser %}
+        {% for todo in object_list %}
+            <li><a href="{% url 'cbv_todo_info' todo.id %}">{{ todo.title }} &nbsp; <small style="color:#F8B259">{{ todo.author }}</small></a></li>
+        {% empty %}
+            <li>등록된 TODO가 없습니다.</li>
+        {% endfor %}
+    {% else %}
+        {% for todo in object_list %}
+            <li><a href="{% url 'cbv_todo_info' todo.id %}">{{ todo.title }}</a></li>
+        {% empty %}
+            <li>등록된 TODO가 없습니다.</li>
+        {% endfor %}
+    {% endif %}
 </ul>
 
 <form method="GET" style="display:inline-block; margin-right: 10px;">
@@ -22,7 +32,7 @@
     <button>검색</button>
 </form>
 
-<a href="{% url 'todo_create' %}" style="vertical-align: middle;">생성</a>
+<a href="{% url 'cbv_todo_create' %}" style="vertical-align: middle;">생성</a>
 
 <div>
     {% if page_obj.has_previous %}
