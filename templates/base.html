@@ -12,11 +12,13 @@
 {% if request.user.is_authenticated %}
 <nav>
     <div style = "text-align : right">
+
+        {{ request.user.username }} 님
+
         <form action="{% url 'logout' %}" method='POST' style="display:inline">
             {% csrf_token %}
-            <button>로그아웃</button>
+            <button class="logout-button">로그아웃</button>
         </form>
-        {{ request.user.username }}
     </div>
 </nav>
 
