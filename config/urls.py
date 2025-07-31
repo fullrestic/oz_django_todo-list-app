@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
@@ -31,6 +33,8 @@ urlpatterns = [
     path('todo/<int:todo_id>/update', todo_update, name='todo_update'),
     path('todo/<int:todo_id>/delete', todo_delete, name='todo_delete'),
 
+    path('summernote/', include('django_summernote.urls')),
+
     path('accounts/login/', user_views.login, name='login'),
     path('accounts/logout/', include('django.contrib.auth.urls'), name='logout'),
     path('signup/', user_views.sign_up, name='signup'),
@@ -38,3 +42,6 @@ urlpatterns = [
     # CBV
     path('cbv/', include('todo.urls')),
 ]
+
+if settings.DEBUG :
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

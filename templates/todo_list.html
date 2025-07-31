@@ -16,8 +16,12 @@
             {% for todo in object_list %}
                 <li class="mb-3 p-3 bg-white rounded shadow-sm todo-item">
                     <a href="{% url 'cbv_todo_info' todo.id %}" class="text-decoration-none text-dark fw-semibold d-block">
-                        {{ todo.title }}
+                        {% if todo.is_completed %}<img src="{{ todo.thumbnail.url }}" style="width: 30px; height: 30px; object-fit: cover;">
+                        {% else %}<img src="/media/image/incomplete.png" style="width: 30px; height: 30px; object-fit: cover;">{% endif %}
+
+                        &nbsp;{{ todo.title }}
                         <small class="text-warning ms-2">{{ todo.author }}</small>
+                        {% if todo.is_completed %}<small class="text-warning ms-2">해냄!</small>{% endif %}
                     </a>
                 </li>
             {% empty %}
@@ -27,7 +31,11 @@
             {% for todo in object_list %}
                 <li class="mb-3 p-3 bg-white rounded shadow-sm todo-item">
                     <a href="{% url 'cbv_todo_info' todo.id %}" class="text-decoration-none text-dark fw-semibold d-block">
-                        {{ todo.title }}
+                        {% if todo.is_completed %}<img src="{{ todo.thumbnail.url }}" style="width: 30px; height: 30px; object-fit: cover;">
+                        {% else %}<img src="/media/image/incomplete.png" style="width: 30px; height: 30px; object-fit: cover;">{% endif %}
+
+                        &nbsp;{{ todo.title }}
+                        {% if todo.is_completed %}<small class="text-warning ms-2">해냄!</small>{% endif %}
                     </a>
                 </li>
             {% empty %}

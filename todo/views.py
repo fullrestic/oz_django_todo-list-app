@@ -47,7 +47,7 @@ def todo_create(request) :
         return redirect(reverse('todo_info', kwargs={'todo_id' : todo.id}))
 
     context = {'form': form}
-    return render(request, template_name='todo_create.html', context=context)
+    return render(request, template_name='todo_form.html', context=context)
 
 
 @login_required
@@ -64,7 +64,7 @@ def todo_update(request, todo_id) :
         'form': form
     }
 
-    return render(request, template_name='todo_update.html', context=context)
+    return render(request, template_name='todo_form.html', context=context)
 
 
 @login_required

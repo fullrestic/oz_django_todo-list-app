@@ -9,7 +9,7 @@ from django.http.response import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
 from todo.models import Todo, Comment
-from todo.forms import CommentForm
+from todo.forms import CommentForm, TodoForm, TodoUpdateForm
 
 
 class TodoListView(LoginRequiredMixin, ListView):
@@ -63,8 +63,9 @@ class TodoDetailView(LoginRequiredMixin, DetailView):
 
 class TodoCreateView(LoginRequiredMixin, CreateView):
     model = Todo
-    template_name = 'todo_create.html'
-    fields = ['title', 'description', 'start_date', 'end_date']
+    template_name = 'todo_form.html'
+    # fields = ['title', 'description', 'start_date', 'end_date']
+    form_class = TodoForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -73,20 +74,34 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sub_title'] = '작성'
+        context['btn_name'] = '생성'
+        return context
+
+
     def get_success_url(self):
         return reverse_lazy('cbv_todo_list')
 
 
 class TodoUpdateView(LoginRequiredMixin, UpdateView):
     model = Todo
-    template_name = 'todo_update.html'
-    fields = ['title', 'description', 'start_date', 'end_date', 'is_completed']
+    template_name = 'todo_form.html'
+    # fields = ['title', 'description', 'start_date', 'end_date', 'is_completed']
+    form_class = TodoUpdateForm
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.object.author != self.request.user and not self.request.user.is_superuser :
             raise Http404
         return self.object
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sub_title'] = '수정'
+        context['btn_name'] = '수정'
+        return context
 
     def get_success_url(self):
         return reverse_lazy('cbv_todo_info', kwargs={'pk': self.object.pk})

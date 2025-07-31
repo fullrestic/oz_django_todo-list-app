@@ -21,7 +21,7 @@
                 {% endif %}
             </p>
 
-            <p class="mb-3" style="line-height: 1.6;">{{ dict.description }}</p>
+            <p class="mb-3" style="line-height: 1.6;">{{ dict.description | safe }}</p>
 
             <p class="mb-1">📅 <strong>시작일</strong> : {{ dict.start_date }}</p>
             <p class="mb-3">⏰ <strong>마감일</strong> : {{ dict.end_date }}</p>
