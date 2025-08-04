@@ -22,8 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 with open(BASE_DIR / '.config_secret/secret.json') as f :
     config_secret_str = f.read()
 
+SECRET = json.loads(config_secret_str)
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = json.loads(config_secret_str)
+SECRET_KEY = SECRET['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -215,3 +217,11 @@ SUMMERNOTE_CONFIG = {
     # 'test_func_upload_view': example_test_func,
 }
 
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.naver.com'
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+EMAIL_HOST_USER = SECRET['EMAIL']['HOST_USER']
+EMAIL_HOST_PASSWORD = SECRET['EMAIL']['PASSWORD']

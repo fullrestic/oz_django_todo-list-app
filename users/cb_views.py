@@ -27,18 +27,18 @@ class SignupView(CreateView) :
 
         url = f'{self.request.scheme}://{self.request.META["HTTP_HOST"]}/users/verify/?code={signer_dump}'
 
-        if settings.DEBUG :
-            print(url)
-        else :
-            subject = '[Todo] 이메일 인증을 완료해주세요'
-            message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
-
-            send_email(subject, message, user.email)
-
-        # subject = '[Todo] 이메일 인증을 완료해주세요'
-        # message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
+        # if settings.DEBUG :
+        #     print(url)
+        # else :
+        #     subject = '[Todo] 이메일 인증을 완료해주세요'
+        #     message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
         #
-        # send_email(subject, message, user.email)
+        #     send_email(subject, message, user.email)
+
+        subject = '[Todo] 이메일 인증을 완료해주세요'
+        message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
+
+        send_email(subject, message, user.email)
 
         return render(
             request = self.request,
