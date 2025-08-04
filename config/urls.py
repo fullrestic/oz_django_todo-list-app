@@ -41,6 +41,7 @@ urlpatterns = [
 
     # CBV
     path('cbv/', include('todo.urls')),
+    path('users/',include('users.urls')),
 ]
 
 if settings.DEBUG :

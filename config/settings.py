@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import json
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,8 +19,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+with open(BASE_DIR / '.config_secret/secret.json') as f :
+    config_secret_str = f.read()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zjnvd%05g10=le@6@&dk3lf)qyjpht4l=_25!%3u%pepwz4%hl'
+SECRET_KEY = json.loads(config_secret_str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +43,7 @@ DJANGO_APPS = [
 
 OWNER_APPS = [
     'todo',
+    'users',
 ]
 
 THIRD_PARTY_APPS = [
@@ -143,6 +147,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Auth
+AUTH_USER_MODEL = 'users.User'
+
 # login
 LOGIN_REDIRECT_URL = '/cbv/todo'
 # LOGIN_URL = '/accounts/login'
@@ -207,3 +214,4 @@ SUMMERNOTE_CONFIG = {
 
     # 'test_func_upload_view': example_test_func,
 }
+

@@ -2,7 +2,8 @@ from io import BytesIO
 from pathlib import Path
 
 from PIL import Image
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from users.models import User
 from django.db import models
 
 class Todo(models.Model):
