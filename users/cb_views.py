@@ -17,52 +17,34 @@ User = get_user_model()
 class SignupView(CreateView) :
     template_name = 'registration/signup.html'
     form_class = SignupForm
-    # success_url = reverse_lazy('signup_done')
 
     def form_valid(self, form) :
         user = form.save()
 
-        # 이메일 발송
-
         signer = TimestampSigner()
         signed_user_email = signer.sign(user.email)
         signer_dump = signing.dumps(signed_user_email)
-        # 디코딩
-        # decoded_user_email = signing.loads(signer_dump)
-        # email = signer.unsign(decoded_user_email)
 
-        url = f'{self.request.scheme}://{self.request.META["HTTP_HOST"]}/verify/?code={signer_dump}'
+        url = f'{self.request.scheme}://{self.request.META["HTTP_HOST"]}/users/verify?code={signer_dump}'
 
-        if settings.DEBUG :
-            print(url)
-        else :
-            subject = '[Pystagram] 이메일 인증을 완료해주세요'
-            message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
+        # if settings.DEBUG :
+        #     print(url)
+        # else :
+        #     subject = '[Todo] 이메일 인증을 완료해주세요'
+        #     message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
+        #
+        #     send_email(subject, message, user.email)
 
-            send_email(subject, message, user.email)
+        subject = '[Todo] 이메일 인증을 완료해주세요'
+        message = f'다음 링크를 클릭해주세요. <a href="{url}">{url}</a>'
+
+        send_email(subject, message, user.email)
 
         return render(
-            self.request,
+            request = self.request,
             template_name='registration/signup_done.html',
-            context= {'user' : user}
+            context= {'user' : user,}
         )
-
-
-class LoginView(FormView) :
-    template_name = 'registration/login.html'
-    form_class = LoginForm
-    success_url = reverse_lazy('todo_list')
-
-    def form_valid(self, form):
-        user = form.user
-        login(self.request, user)
-
-        next_page = self.request.GET.get('next')
-        if next_page:
-            return HttpResponseRedirect(next_page)
-
-        return HttpResponseRedirect(self.get_success_url())
-
 
 def verify_email(request):
     code = request.GET.get('code', '')
@@ -79,3 +61,19 @@ def verify_email(request):
     user.is_active = True
     user.save()
     return render(request, template_name='registration/verify_success.html', context={'user' : user})
+
+
+class LoginView(FormView) :
+    template_name = 'registration/login.html'
+    form_class = LoginForm
+    success_url = reverse_lazy('cbv_todo_list')
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+
+        next_page = self.request.GET.get('next')
+        if next_page:
+            return HttpResponseRedirect(next_page)
+
+        return HttpResponseRedirect(self.get_success_url())

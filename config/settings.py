@@ -30,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Auth
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 DJANGO_APPS = [
@@ -147,8 +149,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Auth
-AUTH_USER_MODEL = 'users.User'
 
 # login
 LOGIN_REDIRECT_URL = '/cbv/todo'

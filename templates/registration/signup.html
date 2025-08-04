@@ -1,12 +1,11 @@
+{% extends 'registration/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>회원가입 페이지</title>
-    <link rel="stylesheet" href="{% static '/signup.css' %}">
-</head>
-<body>
+
+{% block title %}회원가입 페이지{% endblock %}
+{% block extra-css %}<link rel="stylesheet" href="{% static '/signup.css' %}">{% endblock %}
+
+{% block content %}
+
 <div class="signup-container">
     <h1>회원가입</h1>
     <form method="POST">
@@ -15,5 +14,5 @@
         <button type="submit">회원가입</button>
     </form>
 </div>
-</body>
-</html>
+
+{% endblock %}
